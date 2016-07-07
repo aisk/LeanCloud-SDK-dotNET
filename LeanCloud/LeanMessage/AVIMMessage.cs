@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using LeanCloud;
 using System.Reflection;
+using LeanCloud.Internal;
 
 namespace LeanMessage
 {
     /// <summary>
     /// 实时消息的核心基类，它是所有消息的父类
     /// </summary>
-    public abstract class AVIMMessage: IAVIMMessage
+	public abstract class AVIMMessage:EventArgs, IAVIMMessage
     {
         /// <summary>
         /// 默认的构造函数

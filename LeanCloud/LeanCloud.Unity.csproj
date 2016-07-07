@@ -41,6 +41,9 @@
       <HintPath>..\..\..\..\..\Applications\Unity\Unity.app\Contents\Frameworks\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="websocket-sharp">
+      <HintPath>LeanMessage\Internal\WebSocket\websocket-sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compat\ConditionalWeakTable.cs" />
@@ -161,6 +164,44 @@
     <Compile Include="Internal\User\Controller\IAVUserController.cs" />
     <Compile Include="Internal\User\Controller\AVCurrentUserController.cs" />
     <Compile Include="Internal\User\Controller\AVUserController.cs" />
+    <Compile Include="LeanMessage\AVIMAudioMessage.cs" />
+    <Compile Include="LeanMessage\AVIMClient.cs" />
+    <Compile Include="LeanMessage\AVIMConversation.cs" />
+    <Compile Include="LeanMessage\AVIMConversationQuery.cs" />
+    <Compile Include="LeanMessage\AVIMException.cs" />
+    <Compile Include="LeanMessage\AVIMImageMessage.cs" />
+    <Compile Include="LeanMessage\AVIMMessage.cs" />
+    <Compile Include="LeanMessage\AVIMMessageTypeAttribute.cs" />
+    <Compile Include="LeanMessage\AVIMNotice.cs" />
+    <Compile Include="LeanMessage\AVIMNoticeNameAttribute.cs" />
+    <Compile Include="LeanMessage\AVIMSignature.cs" />
+    <Compile Include="LeanMessage\AVIMTextMessage.cs" />
+    <Compile Include="LeanMessage\IAVIMMessage.cs" />
+    <Compile Include="LeanMessage\IAVIMNotice.cs" />
+    <Compile Include="LeanMessage\ISignatureFactory.cs" />
+    <Compile Include="LeanMessage\Internal\AVIMCorePlugins.cs" />
+    <Compile Include="LeanMessage\Internal\IAVIMPlatformHooks.cs" />
+    <Compile Include="LeanMessage\Internal\Command\AVIMCommand.cs" />
+    <Compile Include="LeanMessage\Internal\Command\AVIMCommandRunner.cs" />
+    <Compile Include="LeanMessage\Internal\Command\ConversationCommand.cs" />
+    <Compile Include="LeanMessage\Internal\Command\IAVIMCommandRunner.cs" />
+    <Compile Include="LeanMessage\Internal\Command\MessageCommand.cs" />
+    <Compile Include="LeanMessage\Internal\Command\SessionCommand.cs" />
+    <Compile Include="LeanMessage\Internal\DataEngine\Controller\DateTimeEngine.cs" />
+    <Compile Include="LeanMessage\Internal\DataEngine\Controller\DictionaryEngine.cs" />
+    <Compile Include="LeanMessage\Internal\DataEngine\Controller\StringEngine.cs" />
+    <Compile Include="LeanMessage\Internal\Protocol\AVIMProtocol.cs" />
+    <Compile Include="LeanMessage\Internal\Router\AVRouterController.cs" />
+    <Compile Include="LeanMessage\Internal\Router\IAVRouterController.cs" />
+    <Compile Include="LeanMessage\Internal\Router\State\RouterState.cs" />
+    <Compile Include="LeanMessage\Internal\WebSocket\IWebSocketClient.cs" />
+    <Compile Include="LeanMessage\Internal\WebSocketClient.Unity.cs" />
+    <Compile Include="LeanMessage\AVIMPlatformHooks.Unity.cs" />
+    <Compile Include="Internal\File\Controller\AmazonS3FileController.cs" />
+    <Compile Include="Internal\File\Controller\QCloudCosFileController.cs" />
+    <Compile Include="Internal\File\Controller\QiniuFileController.cs" />
+    <Compile Include="Internal\File\Cryptography\MD5\MD5.cs" />
+    <Compile Include="Internal\File\Cryptography\SHA1\SHA1CryptoServiceProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
@@ -172,4 +213,12 @@
   </Target>
   -->
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="LeanMessage\" />
+    <Folder Include="Internal\File\Cryptography\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LeanMessage\Internal\WebSocket\websocket-sharp.dll" />
+    <None Include="LeanMessage\Internal\WebSocket\websocket-sharp.dll.mdb" />
+  </ItemGroup>
 </Project>

@@ -22,6 +22,9 @@ namespace LeanMessage.Internal
             command = command.IDlize();
             var tcs = new TaskCompletionSource<Tuple<int, IDictionary<string, object>>>();
             var requestString = command.EncodeJsonString();
+			if (AVClient.enabledLog) {
+				AVClient.LogTracker (requestString);
+			}
             webSocketClient.Send(requestString);
             var requestJson = command.Encode();
 

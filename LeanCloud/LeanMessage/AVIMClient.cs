@@ -149,18 +149,18 @@ namespace LeanMessage
             }
         }
 
-        private EventHandler<string> m_OnDisconnected;
-        public event EventHandler<string> OnDisconnected
-        {
-            add
-            {
-                m_OnDisconnected += value;
-            }
-            remove
-            {
-                m_OnDisconnected -= value;
-            }
-        }
+//        private EventHandler<string> m_OnDisconnected;
+//        public event EventHandler<string> OnDisconnected
+//        {
+//            add
+//            {
+//                m_OnDisconnected += value;
+//            }
+//            remove
+//            {
+//                m_OnDisconnected -= value;
+//            }
+//        }
 
 
         IDictionary<string, Action<AVIMNotice>> noticeHandlers = new Dictionary<string, Action<AVIMNotice>>();
@@ -189,7 +189,7 @@ namespace LeanMessage
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="invoker"></param>
-        public void RegisterMessage<T>(Action<IAVIMMessage> invoker)
+        public void RegisterMessage<T>(Action<AVIMMessage> invoker)
              where T : AVIMMessage, new()
         {
             RegisterMessage<T>(invoker, new T());
@@ -201,12 +201,12 @@ namespace LeanMessage
         /// <typeparam name="T"></typeparam>
         /// <param name="invoker"></param>
         /// <param name="adpater"></param>
-        public void RegisterMessage<T>(Action<IAVIMMessage> invoker, IAVIMMessage adpater)
+        public void RegisterMessage<T>(Action<AVIMMessage> invoker, IAVIMMessage adpater)
             where T : AVIMMessage
         {
             int typeEnum = AVIMMessage.GetMessageType<T>();
             if (typeEnum < 0) return;
-            messageHandlers[typeEnum] = invoker;
+			messageHandlers[typeEnum] = invoker;
             adpaters[typeEnum] = adpater;
         }
 
@@ -294,7 +294,7 @@ namespace LeanMessage
 
         private void WebsocketClient_OnError(string obj)
         {
-            m_OnDisconnected?.Invoke(this, obj);
+            //m_OnDisconnected?.Invoke(this, obj);
         }
 
         private void WebsocketClient_OnClosed()
@@ -353,7 +353,6 @@ namespace LeanMessage
              {
                  return AVIMClient.AVCommandRunner.RunCommandAsync(cmd).OnSuccess(t =>
                  {
-
                      var result = t.Result;
                      if (result.Item1 < 1)
                      {
@@ -459,7 +458,7 @@ namespace LeanMessage
         }
 
         private static readonly string[] assemblyNames = {
-            "LeanMessage.Phone","LeanMessage.WinRT","LeanMessage.NetFx45","LeanMessage.iOS","LeanMessage.Android","LeanMessage.Unity"
+            "LeanMessage.Phone","LeanMessage.WinRT","LeanMessage.NetFx45","LeanMessage.iOS","LeanMessage.Android","LeanCloud.Unity"
         };
         private static Type GetAVType(string name)
         {
