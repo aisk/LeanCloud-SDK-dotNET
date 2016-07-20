@@ -155,5 +155,15 @@ namespace LeanCloud.Internal {
       };
       return iterate();
     }
+
+	internal static IList<object> ToListDictionary<T>(this IList<T> list) where T : IToDictionary
+	{
+			IList<object> rtn = new List<object>();
+			foreach (var l in list)
+			{
+				rtn.Add(l.ToDictionary());
+			}
+			return rtn;
+	}
   }
 }

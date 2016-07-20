@@ -17,17 +17,24 @@ namespace LeanCloud {
     private static bool isInitialized = false;
 
     /// <summary>
-    /// The LeanCloud applicationId used in this app. You can get this value from the LeanCloud website.
+    /// 应用的 App Id
     /// </summary>
     [SerializeField]
     public string applicationID;
 
     /// <summary>
-    /// The LeanCloud dotnetKey used in this app. You can get this value from the LeanCloud website.
+    /// 应用的 Appp Key
     /// </summary>
     [SerializeField]
     public string applicationKey;
 
+	
+	/// <summary>
+	/// 应用所在的节点，目前仅支持中国大陆和北美节点
+	/// </summary>
+    [SerializeField]
+	public LeanCloud.AVClient.AVRegion region;
+	
     /// <summary>
     /// Initializes the LeanCloud SDK and begins running network requests created by LeanCloud.
     /// </summary>
@@ -61,7 +68,7 @@ namespace LeanCloud {
         // Keep this gameObject around, even when the scene changes.
         GameObject.DontDestroyOnLoad(gameObject);
 
-        AVClient.Initialize(applicationID, applicationKey);
+		AVClient.Initialize(applicationID, applicationKey,region);
 
         // Kick off the dispatcher.
         StartCoroutine(PlatformHooks.RunDispatcher());

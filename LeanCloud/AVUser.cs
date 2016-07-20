@@ -84,7 +84,7 @@ namespace LeanCloud {
             }
         }
 
-        internal static string CurrentSessionToken {
+		public static string CurrentSessionToken {
             get {
                 Task<string> sessionTokenTask = GetCurrentSessionTokenAsync();
                 sessionTokenTask.Wait();
