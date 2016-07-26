@@ -444,15 +444,15 @@ namespace LeanCloud {
             : this(name,new Uri(url)) {
         }
 
-        /// <summary>
-        /// 根据 byte 数组以及文件名创建文件
-        /// </summary>
-        /// <param name="name">文件名</param>
-        /// <param name="data">文件的 byte[] 数据</param>
-        public AVFile(string name,byte[] data)
-            : this(name,new MemoryStream(data),new Dictionary<string,object>()) {
-
-        }
+//        /// <summary>
+//        /// 根据 byte 数组以及文件名创建文件
+//        /// </summary>
+//        /// <param name="name">文件名</param>
+//        /// <param name="data">文件的 byte[] 数据</param>
+//        public AVFile(string name,byte[] data)
+//            : this(name,new MemoryStream(data),new Dictionary<string,object>()) {
+//
+//        }
 
         /// <summary>
         /// 根据文件名，数据 byte[] 数组以及元数据创建文件
@@ -475,15 +475,15 @@ namespace LeanCloud {
             : this(name,data,GetMIMEType(name)) {
         }
 
-        /// <summary>
-        /// 根据文件名，数据流以及元数据创建文件
-        /// </summary>
-        /// <param name="name">文件名</param>
-        /// <param name="data">文件的数据流</param>
-        public AVFile(string name,Stream data)
-            : this(name,data,new Dictionary<string,object>()) {
-
-        }
+//        /// <summary>
+//        /// 根据文件名，数据流以及元数据创建文件
+//        /// </summary>
+//        /// <param name="name">文件名</param>
+//        /// <param name="data">文件的数据流</param>
+//        public AVFile(string name,Stream data)
+//            : this(name,data,new Dictionary<string,object>()) {
+//
+//        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AVFile"/> class.
@@ -515,6 +515,33 @@ namespace LeanCloud {
                 return rtn;
             });
         }
+		/// <summary>
+		/// 从本地文件存储系统中创建AVFile
+		/// </summary>
+		/// <param name="name">文件名</param>
+		/// <param name="path">e.g:/SD/Camera/AVOSCloud.jpg</param>
+		/// <returns>AVFile</returns>
+		public static AVFile CreateFileWithLocalPath(string name, string path)
+		{
+			byte[] buffer;
+			FileStream fileStream;
+			fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
+			try
+			{
+				int length = (int)fileStream.Length;  // get file length
+				buffer = new byte[length];            // create buffer
+				int count;                            // actual number of bytes read
+				int sum = 0;                          // total number of bytes read
+
+				while ((count = fileStream.Read(buffer, sum, length - sum)) > 0)
+					sum += count;  // sum is a buffer offset for next reading
+			}
+			finally
+			{
+				fileStream.Close();
+			}
+			return new AVFile(name, buffer);
+		}
         #endregion
     }
 

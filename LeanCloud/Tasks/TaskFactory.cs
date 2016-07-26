@@ -50,6 +50,21 @@ namespace System.Threading.Tasks {
       });
       return tcs.Task;
     }
+	public Task<TResult> StartNew<TResult>(Func<object, TResult> function, object state)
+		{
+			TaskCompletionSource<TResult> taskCompletionSource = new TaskCompletionSource<TResult>();
+			this.scheduler.Post(() => {
+				try
+				{
+					taskCompletionSource.SetResult(function(state));
+				}
+				catch (Exception exception)
+				{
+					taskCompletionSource.SetException(exception);
+				}
+			});
+			return taskCompletionSource.Task;
+	}
 
     public Task FromAsync<TArg1, TArg2, TArg3>(
         Func<TArg1, TArg2, TArg3, AsyncCallback, object, IAsyncResult> beginMethod,

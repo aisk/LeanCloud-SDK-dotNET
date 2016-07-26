@@ -17,9 +17,13 @@ namespace LeanCloud.Internal {
         IDictionary<string, object> parameters,
         string sessionToken,
         CancellationToken cancellationToken) {
+			IList<KeyValuePair<string,string>> cloudFunctionHeaders = new List<KeyValuePair<string,string>> ();
+			var prodHeader = AVCloud.ProductionMode ? 1 : 0;
+			cloudFunctionHeaders.Add (new KeyValuePair<string, string> ("X-LC-Prod",prodHeader.ToString()));
       var command = new AVCommand(string.Format("/functions/{0}", Uri.EscapeUriString(name)),
           method: "POST",
           sessionToken: sessionToken,
+		  headers:cloudFunctionHeaders,
           data: NoObjectsEncoder.Instance.Encode(parameters) as IDictionary<string, object>);
       
       return commandRunner.RunCommandAsync(command, cancellationToken: cancellationToken).OnSuccess(t => {

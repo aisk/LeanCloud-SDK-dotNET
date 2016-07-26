@@ -428,7 +428,16 @@ namespace LeanCloud {
                 return AVClient.IsSuccessStatusCode(t.Result.Item1);
             });
         }
-
-
+		private static bool _mode = true;
+		public static bool ProductionMode {
+			get
+			{ 
+				return _mode;
+			} 
+			set
+			{
+				_mode = value;
+			}
+		}
     }
 }

@@ -173,7 +173,21 @@ namespace LeanCloud
 
 			}
 		}
+		internal static void SendCacheToServer()
+		{
+			try
+			{
+				var data = AVClient.ApplicationSettings[AVCACHE_ANALYTICDATA_KEY];
+				if (data != null)
+				{
+					SendAnalyticDataAsync(data);
+				}
+			} catch
+			{
 
+			}
+
+		}
 		internal static Task InitializeAVAnalytic()
 		{
 			SendCacheToServer();
@@ -198,7 +212,7 @@ namespace LeanCloud
 							{
 								Timer timer = new Timer((t =>
 									{
-										Task.Factory.StartNew<Task>(SendAnalyticDataAsync, null);
+										Task.Factory.StartNew(SendAnalyticDataAsync,null);
 									}), null, Timeout.Infinite, AVANALYTIC_INTERVAL * 1000);
 
 							} else if (transStrategy == 7)
@@ -209,6 +223,11 @@ namespace LeanCloud
 					});
 		}
 
+		/// <summary>
+		/// Sends the analytic data async.
+		/// </summary>
+		/// <returns>The analytic data async.</returns>
+		/// <param name="state">State.</param>
 		public static Task SendAnalyticDataAsync(object state)
 		{
 			IDictionary<string, object> data = null;
@@ -219,6 +238,7 @@ namespace LeanCloud
 			{
 				data = GetCurrentAnalyticData();
 			}
+			AVClient.PlatformHooks.ApplicationSettings [AVCACHE_ANALYTICDATA_KEY] = AVClient.SerializeJsonString (data);
 			string currentSessionToken = AVUser.CurrentSessionToken;
 			CancellationToken cancellationToken = new CancellationToken();
 			return AVClient.RequestAsync("POST", "/stats/collect", currentSessionToken, data, cancellationToken).ContinueWith(t =>
@@ -239,28 +259,14 @@ namespace LeanCloud
 
 		public static IDictionary<string,object> GetDeviceInfo()
 		{
-			var rtn = AVClient.DeviceHook;
-			if (!rtn.ContainsKey("app_version"))
-			{
-				rtn.Add("app_version", AVClient.BundelVersion);
-			} else
-			{
-				rtn ["app_version"] = AVClient.BundelVersion;
-			}
-			if (!rtn.ContainsKey("channel"))
-			{
-				rtn.Add("channel", AVClient.Channel);
-			} else
-			{
-				rtn ["channel"] = AVClient.Channel;
-			}
-			if (!rtn.ContainsKey("channel"))
-			{
-				rtn.Add("display_name", AVClient.bundleDisplayName);
-			} else
-			{
-				rtn ["display_name"] = AVClient.bundleDisplayName;
-			}
+			var rtn = new Dictionary<string,object> ();
+			rtn.Add("app_version", AVClient.PlatformHooks.AppBuildVersion);
+			rtn.Add("display_name", AVClient.PlatformHooks.AppName);
+			rtn.Add("os", AVClient.PlatformHooks.DeviceType);
+			rtn.Add("os_version", AVClient.PlatformHooks.OSVersion);
+			rtn.Add("package_name", AVClient.PlatformHooks.AppIdentifier);
+			rtn.Add("sdk_version", AVClient.VersionString);
+			rtn.Add("timezone", AVClient.PlatformHooks.DeviceTimeZone);
 			return rtn;
 		}
 
@@ -299,6 +305,7 @@ namespace LeanCloud
 				if (transStrategy == 7)
 				{
 					var currentSessionData = GetCurrentAnalyticData();
+					AVClient.PlatformHooks.ApplicationSettings [AVCACHE_ANALYTICDATA_KEY] = AVClient.SerializeJsonString (currentSessionData);
 					//CloseSession();
 				}
 			}
